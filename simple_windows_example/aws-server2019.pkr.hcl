@@ -9,7 +9,7 @@ packer {
 }
 
 source "amazon-ebs" "windows" {
-  ami_name      = "packer_server2016"
+  ami_name      = "packer_server2019"
   instance_type = "m3.large"
   region        = "us-east-1"
   security_group_id = "<SECURITYGROUP>"
@@ -17,7 +17,7 @@ source "amazon-ebs" "windows" {
   vpc_id            = "<VPC>"
   source_ami_filter {
     filters = {
-      name                = "*Windows_Server-2016-English-Full-Base*"
+      name                = "*Windows_Server-2019-English-Full-Base*"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
