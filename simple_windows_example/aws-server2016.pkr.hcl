@@ -12,9 +12,9 @@ source "amazon-ebs" "windows" {
   ami_name      = "packer_server2016"
   instance_type = "m3.large"
   region        = "us-east-1"
-  security_group_id = "sg-06592cd4026668f7a"
-  subnet_id         = "subnet-0178e989900bc2231"
-  vpc_id            = "vpc-05cfc2eeadfda8ce7"
+  security_group_id = "<SECURITYGROUP>"
+  subnet_id         = "<SUBNET>"
+  vpc_id            = "<VPC>"
   source_ami_filter {
     filters = {
       name                = "*Windows_Server-2016-English-Full-Base*"
@@ -24,7 +24,6 @@ source "amazon-ebs" "windows" {
     most_recent = true
     owners      = ["amazon"]
   }
-  iam_instance_profile = "SessionManagerInstanceProfile"
   user_data_file = "./bootstrap_win.txt"
   communicator   = "winrm"
   winrm_insecure = true
