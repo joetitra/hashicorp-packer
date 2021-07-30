@@ -1,0 +1,37 @@
+#Lab Commands
+
+#download packer
+wget -P /tmp/ https://releases.hashicorp.com/packer/1.7.2/packer_1.7.2_linux_amd64.zip
+unzip /tmp/packer_1.7.2_linux_amd64.zip -d /tmp/
+rm -f /tmp/packer_1.7.2_linux_amd64.zip
+mv /tmp/packer /usr/bin/
+
+#get Security Groups
+aws ec2 describe-security-groups
+aws ec2 describe-security-groups --filters "Name=group-name,Values=packer_builds" | jq .SecurityGroups[].GroupId
+#get Subnets
+aws ec2 describe-subnets
+aws ec2 describe-subnets --filters "Name=tag:Network,Values=Private" | jq .Subnets[0].SubnetId
+#get VPCs
+aws ec2 describe-vpcs
+aws ec2 describe-vpcs | jq .Vpcs[].VpcId
+
+#execute packer
+cd simple_linux_example/
+packer init .
+packer validate .
+packer fmt .
+packer build .
+
+#list our amis
+aws ec2 describe-images --owners $AWS_ACCOUNT_ID
+
+#machine readable output
+packer -machine-readable version .
+packer -version
+
+#find Ubuntu Base
+aws ec2 describe-images --owners 099720109477 \
+    --filters "Name=root-device-type,Values=ebs" \
+    "Name=name,Values=ubuntu/images/*ubuntu-bionic-18.04-amd64-server-*" \
+    | jq .Images[].ImageLocation
